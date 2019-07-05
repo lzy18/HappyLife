@@ -1,0 +1,120 @@
+/**
+  ******************************************************************************
+  * @file    Thread_NeckControl.c
+  * @author  刘振宇
+  * @version V1.0
+  * @date    2018.3.5
+  * @brief   这个文件实现机器人伸缩和转动电机部件的调节
+  ******************************************************************************
+  * @attention
+   动作步骤：
+   1.启动时，先控制步进电机伸出左右边刷臂，让后放下边刷臂，再放下中扫，之后开始执行清扫路径
+   2.结束时，反序进行
+  *
+  ******************************************************************************
+  */
+
+/* USER CODE BEGIN */
+/* Includes ------------------------------------------------------------------*/
+#include "soft.h"
+#include "stdlib.h"
+/* Define --------------------------------------------------------------------*/
+#define     KP              0.6     //8     PID系数
+#define     KI              0.0002    //30
+#define     KD              0.001    //150
+
+/* Variables -----------------------------------------------------------------*/
+					RAP  l_vr, r_vr, fan1, fan2;     //定义各马达
+
+/* Private variables */
+
+
+/* Function prototypes -------------------------------------------------------*/
+
+/* Private function prototypes */
+
+
+/* Hook prototypes */
+
+/**
+   * @brief PID调速
+   * @param rap: 车轮指令信息
+   * @param ring 车轮状态信息
+   * @retval None
+   * @note  调速间隔，初速大小，最大速度，调速增益 陀螺仪稳定性和调速范围，均会影响蛇行摆动
+   */
+void PIDSpeedController(RAP * rap)
+{
+    float ec = 0;
+
+
+    if((rap->rap == 0) && (rap->duty == 0))  // 静止状态
+    {
+        return;
+    }
+
+
+    if((rap->velocity == 0) && (fabs(rap->duty) > 3000))   //在轮子电源开关没打开时限制输出
+    {
+        return;
+    }
+
+    rap->ek[2] = rap->ek[1];
+    rap->ek[1] = rap->ek[0];
+
+
+    rap->ek[0] = rap->rap - rap->velocity;    //计算目标速度差
+
+
+    ec = KP * rap->ek[0] + rap->integral * KI * rap->integral + KD * (rap->ek[0] - rap->ek[1]); //PID位置型表达式
+
+
+    if(rap->rap == 0)   //用于消除缓停时减速比例过小的问题，即保持一定的减速度直到完全停止
+    {
+        if(ec > 0)
+        {
+            ec = 200;
+        }
+        else if(ec < 0)
+        {
+            ec = -200;
+        }
+    }
+
+    ec = ec + rap->duty;    //增量PID
+
+
+    if(ec > MAX_DUTY)    //限制最大输出
+    {
+        ec = MAX_DUTY;
+    }
+    else if(ec < -MAX_DUTY)
+    {
+        ec = -MAX_DUTY;
+    }
+
+    rap->duty = ec;     //调速后输出
+
+
+}
+
+/**
+   * @brief    初始化左右轮的结构变量
+   * @param    None
+   * @param    None
+   *
+   * @retval   None
+   */
+void InitRap(RAP * rap)
+{
+    u8 i = 0;
+    for(i = 0; i < sizeof(RAP); i++)
+    {
+        *((u8*)rap + i) = 0;
+    }
+}
+
+
+
+
+/* USER CODE END */

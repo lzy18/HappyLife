@@ -1,0 +1,12 @@
+motorctrl0225\port.o: ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM3/port.c
+motorctrl0225\port.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h
+motorctrl0225\port.o: d:\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
+motorctrl0225\port.o: d:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+motorctrl0225\port.o: ../Inc/FreeRTOSConfig.h
+motorctrl0225\port.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h
+motorctrl0225\port.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/portable.h
+motorctrl0225\port.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/deprecated_definitions.h
+motorctrl0225\port.o: ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM3/portmacro.h
+motorctrl0225\port.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/mpu_wrappers.h
+motorctrl0225\port.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/task.h
+motorctrl0225\port.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/list.h
