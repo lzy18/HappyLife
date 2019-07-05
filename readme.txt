@@ -3,4 +3,8 @@ Git is free software distributed under the GPL.
 git has a mutalble index called stage.
 git tracks changes of files.
 boss is pig.
-creating a new branch is quick & simple.
+<<<<<<< HEAD
+creating a new branch is quick and simple.
+=======
+creating a new branch is quick and simple.
+>>>>>>> feature1
